@@ -4,24 +4,44 @@
 using namespace std;
 
 string select_word();
-void display_blanks(string &word);
-void player_guess(char choice, string &word);
-void update_choice(char choice, string &word, int pos);
+vector<char> get_characters(string ex);
+void player_guess(char choice, vector<char> check_vec);
+vector<char> fill_vec();
+vector<char> fill_vec_for_blanks(int size);
+bool check_win(vector<char> blanks);
 
-/*
- * 1. Word selection: Create an array of strings and choose randomly.
- * 2. Blanks Display: Display the underscores with same number of characters.
- * 3. Guess Tracker: Create an integer variable and count the times the player has guessed.
- * 4. Update Display: Each time the player guesses the correct character,
- * an underscore disappears and gets replaced with the correct character.
- * 5. Win\Lose Check: Check if the player has guessed all characters.
- * 6. Ask for another Trial using loop.
- */
 int main() {
-    string word = "Bed";
-    display_blanks(word);
-    player_guess('e', word);
-    display_blanks(word);
+    // Fill in the characters using random words.
+    vector<char> word {fill_vec()};
+    int count {0};
+    for(int i{0}; i < word.size(); i++) { count += 1; }
+    vector<char> blanks {fill_vec_for_blanks(count)};
+
+    for(char i: blanks) { cout << i << " ";};
+
+        int i {0};
+        while (i < blanks.size()) {
+            char choice{};
+            cout << "\nEnter your choice: ";
+            cin >> choice;
+            if (word[i] == choice) {
+                cout << "\nCorrect!\n";
+                blanks[i] = choice;
+                for (int i{0}; i < blanks.size(); i++)
+                    cout << blanks[i] << " ";
+            } else {
+                cout << "Incorrect!\n";
+                for (int i{0}; i < blanks.size(); i++)
+                    cout << blanks[i] << " ";
+            }
+            i++;
+//            for (int i{0}; i < blanks.size(); i++)
+//                cout << blanks[i] << " ";
+        }
+//        if (check_win(blanks)) {
+//            cout << "Congrats!! you guessed it.";
+//            break;
+//        }
     return 0;
 }
 string select_word() {
@@ -34,25 +54,50 @@ string select_word() {
     return list_words.at(choice);
 }
 
-void display_blanks(string &word){
-//    string word = select_word();
-    for(int i{0}; i < word.size(); i++) {
-        cout << " _ ";
+vector<char> get_characters(string ex){
+    vector<char> word {};
+    for(int i{0}; i < ex.size(); i++){
+        word.push_back(ex[i]);
     }
+    return word;
 }
 
-void player_guess(char choice, string &word){
-    int i;
-    for(i = 0; i < word.size(); i++) {
-        if (word[i] == choice) {
-            cout << "\nCorrect!" << endl;
-            update_choice(choice, word, i);
-            break;
+void player_guess(char choice, vector<char> check_vec){
+    for(int i {0}; i < check_vec.size(); i++){
+        if(check_vec.at(i) == choice){
+            cout << "\nCorrect!\n";
+            cout << choice;
+            check_vec[i] = choice;
+        }
+        if(check_vec.at(i) != choice){
+            cout << " _ ";
         }
     }
 }
 
-void update_choice(char choice, string &word, int pos){
-     word[pos] = choice;
-     return word;
+vector<char> fill_vec(){
+    vector<char> word {};
+    string rand_word {select_word()};
+    for(int i{0}; i < rand_word.size(); i++){
+        word.push_back(rand_word[i]);
+    }
+    return word;
+}
+
+vector<char> fill_vec_for_blanks(int size){
+    vector<char> num_of_blanks {};
+    for(int i{0}; i < size; i++){
+        num_of_blanks.push_back('_');
+    }
+    return num_of_blanks;
+}
+
+bool check_win(vector<char> blanks){
+    // if the characters of the blanks are all != underscores
+    for(int i{0}; i < blanks.size(); i++){
+        if (blanks[i] == '_'){
+            return false;
+        }
+    }
+    return true;
 }
