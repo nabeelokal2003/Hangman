@@ -1,0 +1,3 @@
+/home/nabeel_okal/CLionProjects/Hangman-master/cmake-build-debug/CMakeFiles/FirstProgram.dir
+/home/nabeel_okal/CLionProjects/Hangman-master/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/nabeel_okal/CLionProjects/Hangman-master/cmake-build-debug/CMakeFiles/rebuild_cache.dir
